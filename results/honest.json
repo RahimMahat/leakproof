@@ -1,0 +1,29 @@
+[
+  {
+    "variant": "base_mature",
+    "split": "time",
+    "roc_auc": 0.8909,
+    "pr_auc": 0.4916,
+    "trees": 213,
+    "test_rows": 88581,
+    "train_rows": 316473
+  },
+  {
+    "variant": "pit_instant_labels",
+    "split": "time",
+    "roc_auc": 0.9808,
+    "pr_auc": 0.8567,
+    "trees": 159,
+    "test_rows": 88581,
+    "train_rows": 413378
+  },
+  {
+    "variant": "pit_honest",
+    "split": "time",
+    "roc_auc": 0.954,
+    "pr_auc": 0.6948,
+    "trees": 180,
+    "test_rows": 88581,
+    "train_rows": 316473
+  }
+]

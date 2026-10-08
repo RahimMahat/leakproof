@@ -50,5 +50,21 @@ def run_naive(mlflow: bool = typer.Option(True, help="Also log the runs to the l
         naive_run.log_to_mlflow(results)
 
 
+@run_app.command("honest")
+def run_honest(
+    mlflow: bool = typer.Option(True, help="Also log the runs to the local MLflow store."),
+) -> None:
+    """Train the point-in-time pipeline (and two label-timing shortcuts) and record the scores."""
+    import pandas as pd
+
+    from leakproof.model import honest_run, naive_run
+
+    results = honest_run.run_ladder()
+    typer.echo(pd.DataFrame(results).to_string(index=False))
+    typer.echo(f"\nsaved to {naive_run.save(results, honest_run.RESULTS_PATH)}")
+    if mlflow:
+        naive_run.log_to_mlflow(results, experiment="point-in-time")
+
+
 if __name__ == "__main__":
     app()

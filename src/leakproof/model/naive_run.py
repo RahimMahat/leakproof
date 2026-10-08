@@ -39,7 +39,7 @@ def random_split(n: int, seed: int = SEED) -> tuple[np.ndarray, np.ndarray, np.n
     return idx[:a], idx[a:b], idx[b:]
 
 
-def _run(
+def run_variant(
     df: pd.DataFrame, extra: list[str], tr: np.ndarray, st: np.ndarray, te: np.ndarray
 ) -> dict[str, Any]:
     X, y = to_matrix(df, extra), df["isFraud"]
@@ -59,16 +59,20 @@ def run_ladder(df: pd.DataFrame | None = None) -> list[dict[str, Any]]:
         {
             "variant": "time_split_base",
             "split": "time",
-            **_run(df, [], train_pos[:cut], train_pos[cut:], np.flatnonzero(df["period"] == "valid")),
+            **run_variant(df, [], train_pos[:cut], train_pos[cut:], np.flatnonzero(df["period"] == "valid")),
         }
     )
 
     tr, st, te = random_split(len(df))
-    results.append({"variant": "random_base", "split": "random", **_run(df, [], tr, st, te)})
+    results.append({"variant": "random_base", "split": "random", **run_variant(df, [], tr, st, te)})
 
     aggs = add_global_aggregates(df)
     results.append(
-        {"variant": "random_global_aggs", "split": "random", **_run(aggs, GLOBAL_AGG_FEATURES, tr, st, te)}
+        {
+            "variant": "random_global_aggs",
+            "split": "random",
+            **run_variant(aggs, GLOBAL_AGG_FEATURES, tr, st, te),
+        }
     )
 
     enc = add_target_encoding(aggs)
@@ -76,7 +80,7 @@ def run_ladder(df: pd.DataFrame | None = None) -> list[dict[str, Any]]:
         {
             "variant": "random_target_enc",
             "split": "random",
-            **_run(enc, [*GLOBAL_AGG_FEATURES, *TARGET_ENC_FEATURES], tr, st, te),
+            **run_variant(enc, [*GLOBAL_AGG_FEATURES, *TARGET_ENC_FEATURES], tr, st, te),
         }
     )
     return results
