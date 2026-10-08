@@ -67,10 +67,10 @@ def build_dataset(raw_dir: Path = RAW_DIR, out_path: Path = DATASET_PATH, seed: 
             raise FileNotFoundError(f"{f} missing; run `leakproof data download`")
     con = duckdb.connect()
     try:
-        keys = con.sql(
-            f"select TransactionID, TransactionDT, isFraud from read_csv('{tx.as_posix()}')"
-        ).df()
-        keys = simulate_label_delay(assign_period(keys), seed)[["TransactionID", "period", "label_available_at"]]
+        keys = con.sql(f"select TransactionID, TransactionDT, isFraud from read_csv('{tx.as_posix()}')").df()
+        keys = simulate_label_delay(assign_period(keys), seed)[
+            ["TransactionID", "period", "label_available_at"]
+        ]
         con.register("keys", keys)
         out_path.parent.mkdir(parents=True, exist_ok=True)
         con.sql(
