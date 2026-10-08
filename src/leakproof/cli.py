@@ -66,6 +66,18 @@ def run_honest(
         naive_run.log_to_mlflow(results, experiment="point-in-time")
 
 
+@run_app.command("headline")
+def run_headline() -> None:
+    """Train both final models and score the holdout period on live features: offline vs live."""
+    import pandas as pd
+
+    from leakproof.model import final, naive_run
+
+    results = final.run_headline(honest_offline=final.honest_offline_estimate())
+    typer.echo(pd.DataFrame(results).to_string(index=False))
+    typer.echo(f"\nsaved to {naive_run.save(results, final.RESULTS_PATH)}")
+
+
 stream_app = typer.Typer(no_args_is_help=True, help="Streaming path (needs `docker compose up -d`).")
 app.add_typer(stream_app, name="stream")
 
@@ -93,6 +105,30 @@ def stream_parity(
         typer.echo(f"saved to {parity.save(report)}")
     if report["mismatched_rows"]:
         raise typer.Exit(1)
+
+
+serve_app = typer.Typer(no_args_is_help=True, help="Online scoring service.")
+app.add_typer(serve_app, name="serve")
+
+
+@serve_app.command("run")
+def serve_run(host: str = "127.0.0.1", port: int = 8000) -> None:
+    """Run the scoring API with the honest model (needs `leakproof run headline` first)."""
+    import uvicorn
+
+    uvicorn.run("leakproof.serve.app:app_from_env", factory=True, host=host, port=port)
+
+
+@serve_app.command("replay")
+def serve_replay(limit: int = typer.Option(2000, help="Holdout transactions to send.")) -> None:
+    """Replay the start of the holdout period through the HTTP service; report latency."""
+    from leakproof.model import naive_run
+    from leakproof.serve import replay
+
+    report = replay.run_replay(limit=limit)
+    for key, value in report.items():
+        typer.echo(f"{key}: {value}")
+    typer.echo(f"saved to {naive_run.save([report], replay.RESULTS_PATH)}")
 
 
 if __name__ == "__main__":

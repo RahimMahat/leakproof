@@ -59,3 +59,47 @@ def test_ladder_runs_and_target_encoding_inflates_the_score():
     assert list(results) == ["time_split_base", "random_base", "random_global_aggs", "random_target_enc"]
     assert results["random_target_enc"]["roc_auc"] > results["random_base"]["roc_auc"] + 0.1
     assert results["random_target_enc"]["roc_auc"] == pytest.approx(1.0, abs=0.05)
+
+
+def test_serving_features_equal_the_naive_features_on_history_so_far():
+    """Served at the last transaction of a card, the naive aggregates cover exactly its history."""
+    from leakproof.features.naive import GLOBAL_AGG_FEATURES, naive_serving_features
+
+    amounts = [10.0, 20.0, 60.0, 5.0]
+    history = pd.DataFrame({"card_id": "a", "TransactionAmt": amounts})
+    want = add_global_aggregates(history).iloc[-1]
+    prior = pd.Series(amounts[:-1])
+    served = naive_serving_features(
+        pd.DataFrame(
+            {
+                "TransactionAmt": [amounts[-1]],
+                "card_cnt_all": [3],
+                "card_amt_mean_all": [prior.mean()],
+                "card_amt_std_all": [prior.std()],
+                "card_labeled_cnt": [2],
+                "card_fraud_cnt": [1],
+            }
+        )
+    ).iloc[0]
+    for f in GLOBAL_AGG_FEATURES:
+        assert served[f] == pytest.approx(want[f]), f
+    assert served["card_fraud_rate"] == 0.5 and served["card_fraud_count"] == 1
+
+
+def test_serving_features_for_a_new_card():
+    from leakproof.features.naive import naive_serving_features
+
+    row = naive_serving_features(
+        pd.DataFrame(
+            {
+                "TransactionAmt": [40.0],
+                "card_cnt_all": [0],
+                "card_amt_mean_all": [np.nan],
+                "card_amt_std_all": [np.nan],
+                "card_labeled_cnt": [0],
+                "card_fraud_cnt": [0],
+            }
+        )
+    ).iloc[0]
+    assert row["card_tx_count"] == 1 and row["card_amt_mean"] == 40.0 and row["amt_vs_card_mean"] == 1.0
+    assert np.isnan(row["card_amt_std"]) and np.isnan(row["card_fraud_rate"])

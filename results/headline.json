@@ -1,0 +1,22 @@
+[
+  {
+    "model": "naive",
+    "live_roc_auc": 0.9014,
+    "live_pr_auc": 0.5131,
+    "offline_roc_auc": 0.9993,
+    "offline_pr_auc": 0.9864,
+    "roc_auc_gap": 0.0979,
+    "pr_auc_gap": 0.4733,
+    "train_rows": 351371
+  },
+  {
+    "model": "honest",
+    "live_roc_auc": 0.9469,
+    "live_pr_auc": 0.6647,
+    "offline_roc_auc": 0.954,
+    "offline_pr_auc": 0.6948,
+    "roc_auc_gap": 0.0071,
+    "pr_auc_gap": 0.0301,
+    "train_rows": 419407
+  }
+]

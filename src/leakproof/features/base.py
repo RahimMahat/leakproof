@@ -7,8 +7,10 @@ transaction time, so using it is not leakage.
 
 from __future__ import annotations
 
+import math
 from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 import duckdb
 import pandas as pd
@@ -55,3 +57,19 @@ def to_matrix(df: pd.DataFrame, extra: Iterable[str] = ()) -> pd.DataFrame:
     for c in CATEGORICAL:
         X[c] = X[c].astype("category")
     return X
+
+
+def card_id_from_row(row: dict[str, Any]) -> str:
+    """`card_id` for one transaction, identical to CARD_ID_SQL (a test checks this on real data)."""
+
+    def num(key: str, as_int: bool = False) -> str:
+        v = row.get(key)
+        if v is None or v != v:  # None or NaN
+            return ""
+        return str(int(v)) if as_int else repr(float(v))
+
+    d1, dt = row.get("D1"), row.get("TransactionDT")
+    if d1 is None or d1 != d1 or dt is None:
+        return "|".join([num("card1", True), num("card2"), num("card3"), num("card5"), num("addr1"), ""])
+    first_seen = str(math.floor(float(dt) / DAY - float(d1)))
+    return "|".join([num("card1", True), num("card2"), num("card3"), num("card5"), num("addr1"), first_seen])

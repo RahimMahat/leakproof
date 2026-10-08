@@ -13,7 +13,9 @@ second, so neither implementation is allowed to depend on one.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
+import numpy as np
 import pandas as pd
 
 HOUR, DAY, WEEK = 3_600, 86_400, 604_800
@@ -61,12 +63,30 @@ PIT_FEATURES = [
 LABEL_FEATURES = ["card_labeled_cnt", "card_fraud_cnt", "card_fraud_rate"]
 
 
+def derive(
+    t: Any, amt: Any, last_t: Any, first_t: Any, mean: Any, fraud: Any, labeled: Any
+) -> dict[str, Any]:
+    """The derived features, from the raw aggregates. Works on whole columns (offline) and on
+    single numpy floats (online scoring), so there is one formula and the two paths can't drift."""
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return {
+            "secs_since_last_tx": t - last_t,
+            "card_age_s": t - first_t,
+            "amt_vs_card_mean": amt / mean,
+            "card_fraud_rate": fraud / np.where(labeled > 0, labeled, np.nan),
+        }
+
+
 def add_derived(df: pd.DataFrame) -> pd.DataFrame:
-    """Features computed from the raw aggregates. Used by both the offline and the online path,
-    so the arithmetic can't drift between them. Needs TransactionDT and TransactionAmt."""
+    """Add the derived features to a frame holding TransactionDT, TransactionAmt and the raw aggregates."""
     return df.assign(
-        secs_since_last_tx=df["TransactionDT"] - df["card_last_t"],
-        card_age_s=df["TransactionDT"] - df["card_first_t"],
-        amt_vs_card_mean=df["TransactionAmt"] / df["card_amt_mean_all"],
-        card_fraud_rate=df["card_fraud_cnt"] / df["card_labeled_cnt"].where(df["card_labeled_cnt"] > 0),
+        **derive(
+            df["TransactionDT"],
+            df["TransactionAmt"],
+            df["card_last_t"],
+            df["card_first_t"],
+            df["card_amt_mean_all"],
+            df["card_fraud_cnt"],
+            df["card_labeled_cnt"],
+        )
     )
