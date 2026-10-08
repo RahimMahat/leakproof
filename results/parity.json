@@ -1,0 +1,71 @@
+{
+  "rows": 88581,
+  "mismatched_rows": 0,
+  "mismatch_rate": 0.0,
+  "by_feature": {
+    "card_cnt_1h": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "card_cnt_24h": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "card_cnt_7d": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "card_amt_sum_24h": {
+      "mismatches": 0,
+      "max_abs_diff": 1.8189894035458565e-12
+    },
+    "card_amt_sum_7d": {
+      "mismatches": 0,
+      "max_abs_diff": 1.8189894035458565e-12
+    },
+    "card_cnt_all": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "card_amt_mean_all": {
+      "mismatches": 0,
+      "max_abs_diff": 9.094947017729282e-13
+    },
+    "card_amt_std_all": {
+      "mismatches": 0,
+      "max_abs_diff": 5.569494857771083e-13
+    },
+    "secs_since_last_tx": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "card_age_s": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "amt_vs_card_mean": {
+      "mismatches": 0,
+      "max_abs_diff": 7.105427357601002e-15
+    },
+    "card_labeled_cnt": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "card_fraud_cnt": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    },
+    "card_fraud_rate": {
+      "mismatches": 0,
+      "max_abs_diff": 0.0
+    }
+  },
+  "history_events": 921366,
+  "live_events": 259714,
+  "events_per_s": 900,
+  "timings": {
+    "backfill_s": 65.8,
+    "produce_s": 3.6,
+    "consume_s": 288.6
+  }
+}

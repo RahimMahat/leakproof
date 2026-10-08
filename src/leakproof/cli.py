@@ -66,5 +66,34 @@ def run_honest(
         naive_run.log_to_mlflow(results, experiment="point-in-time")
 
 
+stream_app = typer.Typer(no_args_is_help=True, help="Streaming path (needs `docker compose up -d`).")
+app.add_typer(stream_app, name="stream")
+
+
+@stream_app.command("parity")
+def stream_parity(
+    limit: int = typer.Option(None, help="Only the first N holdout events (smoke run)."),
+) -> None:
+    """Stream the holdout period through Redpanda and Redis; compare online with offline features."""
+    from leakproof.stream import parity
+
+    report = parity.run_parity(limit=limit)
+    typer.echo(
+        f"rows compared: {report['rows']:,}   mismatched rows: {report['mismatched_rows']:,} "
+        f"({report['mismatch_rate']:.4%})"
+    )
+    typer.echo(
+        f"history events backfilled: {report['history_events']:,}   live events: {report['live_events']:,}"
+    )
+    typer.echo(f"timings: {report['timings']}   consumer throughput: {report['events_per_s']:,} events/s")
+    bad = {f: v for f, v in report["by_feature"].items() if v["mismatches"]}
+    if bad:
+        typer.echo(f"features with mismatches: {bad}")
+    if not limit:
+        typer.echo(f"saved to {parity.save(report)}")
+    if report["mismatched_rows"]:
+        raise typer.Exit(1)
+
+
 if __name__ == "__main__":
     app()

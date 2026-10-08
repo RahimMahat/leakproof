@@ -18,3 +18,6 @@ RAW_FILES = ("train_transaction.csv", "train_identity.csv")  # the test_* files 
 
 SEED = 42
 DAY = 86_400  # TransactionDT is in seconds from an undisclosed start
+
+KAFKA_BOOTSTRAP = os.environ.get("LEAKPROOF_KAFKA", "localhost:9092")
+REDIS_URL = os.environ.get("LEAKPROOF_REDIS", "redis://localhost:6379/0")
