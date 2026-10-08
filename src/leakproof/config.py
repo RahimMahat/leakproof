@@ -21,3 +21,6 @@ DAY = 86_400  # TransactionDT is in seconds from an undisclosed start
 
 KAFKA_BOOTSTRAP = os.environ.get("LEAKPROOF_KAFKA", "localhost:9092")
 REDIS_URL = os.environ.get("LEAKPROOF_REDIS", "redis://localhost:6379/0")
+
+# Cost of sending one alert to a human reviewer, in the dataset's currency (USD).
+REVIEW_COST = float(os.environ.get("LEAKPROOF_REVIEW_COST", "5"))

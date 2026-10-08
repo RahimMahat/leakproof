@@ -78,6 +78,45 @@ def run_headline() -> None:
     typer.echo(f"\nsaved to {naive_run.save(results, final.RESULTS_PATH)}")
 
 
+@run_app.command("decisions")
+def run_decisions(
+    review_cost: float = typer.Option(None, help="Cost of one manual review (default: config)."),
+) -> None:
+    """Cost-based alert threshold, feature drift and daily performance on the holdout period."""
+    import pandas as pd
+
+    from leakproof import monitor
+    from leakproof.config import REVIEW_COST
+    from leakproof.model import final, naive_run, threshold
+
+    cost = REVIEW_COST if review_cost is None else review_cost
+    f = final.scored_frames()
+    holdout = f["holdout"]
+    rows = threshold.run_decisions(f["honest_select"], f["naive_select"], holdout, cost)
+    typer.echo(f"review cost per alert: {cost}")
+    typer.echo(pd.DataFrame(rows).to_string(index=False))
+    naive_run.save(rows, threshold.RESULTS_PATH)
+
+    drift = monitor.drift_report(f["reference"], f["current"])
+    score_psi = monitor.psi(f["honest_select"]["score"], holdout["score_honest"])
+    typer.echo(
+        f"\nmodel score PSI: {score_psi:.4f}   features by level: {drift['level'].value_counts().to_dict()}"
+    )
+    typer.echo(drift.head(10).to_string(index=False))
+    naive_run.save(
+        [{"feature": "model_score", "psi": round(score_psi, 4)}, *monitor.to_records(drift)],
+        monitor.DRIFT_PATH,
+    )
+
+    chosen = next(r["threshold"] for r in rows if r["policy"] == "honest_cost_threshold")
+    daily = monitor.daily_report(
+        holdout.assign(score=holdout["score_honest"]), chosen, as_of=float(holdout["TransactionDT"].max())
+    )
+    typer.echo(f"\ndaily view at threshold {chosen}, labels as known on the last holdout day:")
+    typer.echo(daily.to_string(index=False))
+    naive_run.save(monitor.to_records(daily), monitor.DAILY_PATH)
+
+
 stream_app = typer.Typer(no_args_is_help=True, help="Streaming path (needs `docker compose up -d`).")
 app.add_typer(stream_app, name="stream")
 

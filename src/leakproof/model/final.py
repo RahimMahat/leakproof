@@ -122,3 +122,46 @@ def honest_offline_estimate(path: Path = PROJECT_ROOT / "results" / "honest.json
         if r["variant"] == "pit_honest":
             return {"roc_auc": r["roc_auc"], "pr_auc": r["pr_auc"]}
     return None
+
+
+def scored_frames() -> dict[str, pd.DataFrame]:
+    """Model scores on the sets a threshold can be chosen on, and on the holdout period (live).
+
+    honest_select  rows the honest model held back for early stopping, kept only where both
+                   classes have had time to be labelled (at least 30 days before the cutoff)
+    naive_select   the naive model's own random test split, with its leaky features
+    holdout        live features; columns score_honest and score_naive
+    reference / current   the honest model's inputs for the development and holdout periods
+    """
+    from leakproof.config import DAY
+    from leakproof.data.split import LEGIT_DELAY_DAYS
+
+    honest = joblib.load(MODEL_DIR / "honest.joblib")["model"]
+    naive = joblib.load(MODEL_DIR / "naive.joblib")["model"]
+    dev = load_frame(("train", "valid")).sort_values(["TransactionDT", "TransactionID"])
+    dev = dev.reset_index(drop=True)
+    holdout = load_frame(("holdout",))
+    cutoff = float(holdout["TransactionDT"].min())
+
+    def p(model: Any, X: pd.DataFrame) -> np.ndarray:
+        return np.asarray(model.predict_proba(X))[:, 1]
+
+    feats = with_features(dev)
+    reference = to_matrix(feats, HONEST_EXTRA)
+    _, stop = time_ordered_split(np.flatnonzero(feats["label_available_at"] <= cutoff))
+    stop = stop[feats["TransactionDT"].to_numpy()[stop] <= cutoff - LEGIT_DELAY_DAYS * DAY]
+    honest_select = feats.iloc[stop].assign(score=p(honest, reference.iloc[stop]))
+
+    leaky = add_target_encoding(add_global_aggregates(dev))
+    test = random_split(len(leaky))[2]
+    naive_select = leaky.iloc[test].assign(score=p(naive, to_matrix(leaky.iloc[test], NAIVE_EXTRA)))
+
+    current, X_naive = live_frames(holdout, pd.read_parquet(ONLINE_FEATURES_PATH))
+    holdout = holdout.assign(score_honest=p(honest, current), score_naive=p(naive, X_naive))
+    return {
+        "honest_select": honest_select,
+        "naive_select": naive_select,
+        "holdout": holdout,
+        "reference": reference,
+        "current": current,
+    }

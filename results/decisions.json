@@ -1,0 +1,83 @@
+[
+  {
+    "policy": "no_model",
+    "threshold": null,
+    "alerts": 0,
+    "alert_rate": 0.0,
+    "precision": null,
+    "recall": 0.0,
+    "fraud_caught_amt": 0,
+    "fraud_missed_amt": 469609,
+    "review_cost": 0,
+    "total_cost": 469609,
+    "cost_per_1k_tx": 5301.5
+  },
+  {
+    "policy": "honest_accuracy_threshold",
+    "threshold": 0.4466,
+    "alerts": 1942,
+    "alert_rate": 0.0219,
+    "precision": 0.8126,
+    "recall": 0.5118,
+    "fraud_caught_amt": 179805,
+    "fraud_missed_amt": 289804,
+    "review_cost": 9710,
+    "total_cost": 299514,
+    "cost_per_1k_tx": 3381.2,
+    "promised_cost_per_1k_tx": 4208.0
+  },
+  {
+    "policy": "honest_cost_threshold",
+    "threshold": 0.0204,
+    "alerts": 15371,
+    "alert_rate": 0.1735,
+    "precision": 0.1759,
+    "recall": 0.8771,
+    "fraud_caught_amt": 399267,
+    "fraud_missed_amt": 70341,
+    "review_cost": 76855,
+    "total_cost": 147196,
+    "cost_per_1k_tx": 1661.7,
+    "promised_cost_per_1k_tx": 1654.0
+  },
+  {
+    "policy": "honest_hindsight",
+    "threshold": 0.0138,
+    "alerts": 20753,
+    "alert_rate": 0.2343,
+    "precision": 0.1366,
+    "recall": 0.9196,
+    "fraud_caught_amt": 428046,
+    "fraud_missed_amt": 41563,
+    "review_cost": 103765,
+    "total_cost": 145328,
+    "cost_per_1k_tx": 1640.6
+  },
+  {
+    "policy": "naive_cost_threshold",
+    "threshold": 0.0467,
+    "alerts": 1128,
+    "alert_rate": 0.0127,
+    "precision": 0.6773,
+    "recall": 0.2478,
+    "fraud_caught_amt": 94005,
+    "fraud_missed_amt": 375604,
+    "review_cost": 5640,
+    "total_cost": 381244,
+    "cost_per_1k_tx": 4303.9,
+    "promised_cost_per_1k_tx": 263.5
+  },
+  {
+    "policy": "naive_hindsight",
+    "threshold": 0.0,
+    "alerts": 17522,
+    "alert_rate": 0.1978,
+    "precision": 0.1438,
+    "recall": 0.8171,
+    "fraud_caught_amt": 364234,
+    "fraud_missed_amt": 105374,
+    "review_cost": 87610,
+    "total_cost": 192984,
+    "cost_per_1k_tx": 2178.6
+  }
+]

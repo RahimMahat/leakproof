@@ -1,0 +1,341 @@
+[
+  {
+    "feature": "model_score",
+    "psi": 0.0089
+  },
+  {
+    "feature": "card_age_s",
+    "psi": 0.2549,
+    "level": "major"
+  },
+  {
+    "feature": "D11",
+    "psi": 0.2368,
+    "level": "moderate"
+  },
+  {
+    "feature": "M9",
+    "psi": 0.2265,
+    "level": "moderate"
+  },
+  {
+    "feature": "M8",
+    "psi": 0.226,
+    "level": "moderate"
+  },
+  {
+    "feature": "M7",
+    "psi": 0.2257,
+    "level": "moderate"
+  },
+  {
+    "feature": "M2",
+    "psi": 0.1888,
+    "level": "moderate"
+  },
+  {
+    "feature": "M3",
+    "psi": 0.1874,
+    "level": "moderate"
+  },
+  {
+    "feature": "M1",
+    "psi": 0.1871,
+    "level": "moderate"
+  },
+  {
+    "feature": "card_labeled_cnt",
+    "psi": 0.1518,
+    "level": "moderate"
+  },
+  {
+    "feature": "card_fraud_rate",
+    "psi": 0.1284,
+    "level": "moderate"
+  },
+  {
+    "feature": "card_cnt_all",
+    "psi": 0.0814,
+    "level": "stable"
+  },
+  {
+    "feature": "D15",
+    "psi": 0.0763,
+    "level": "stable"
+  },
+  {
+    "feature": "secs_since_last_tx",
+    "psi": 0.0643,
+    "level": "stable"
+  },
+  {
+    "feature": "D10",
+    "psi": 0.0545,
+    "level": "stable"
+  },
+  {
+    "feature": "card_amt_std_all",
+    "psi": 0.0516,
+    "level": "stable"
+  },
+  {
+    "feature": "ProductCD",
+    "psi": 0.0452,
+    "level": "stable"
+  },
+  {
+    "feature": "C9",
+    "psi": 0.0428,
+    "level": "stable"
+  },
+  {
+    "feature": "card_amt_mean_all",
+    "psi": 0.0364,
+    "level": "stable"
+  },
+  {
+    "feature": "amt_vs_card_mean",
+    "psi": 0.036,
+    "level": "stable"
+  },
+  {
+    "feature": "D4",
+    "psi": 0.0298,
+    "level": "stable"
+  },
+  {
+    "feature": "C12",
+    "psi": 0.0271,
+    "level": "stable"
+  },
+  {
+    "feature": "D2",
+    "psi": 0.0263,
+    "level": "stable"
+  },
+  {
+    "feature": "D3",
+    "psi": 0.0258,
+    "level": "stable"
+  },
+  {
+    "feature": "D1",
+    "psi": 0.0245,
+    "level": "stable"
+  },
+  {
+    "feature": "R_emaildomain",
+    "psi": 0.0166,
+    "level": "stable"
+  },
+  {
+    "feature": "D5",
+    "psi": 0.016,
+    "level": "stable"
+  },
+  {
+    "feature": "C13",
+    "psi": 0.016,
+    "level": "stable"
+  },
+  {
+    "feature": "D6",
+    "psi": 0.0149,
+    "level": "stable"
+  },
+  {
+    "feature": "card4",
+    "psi": 0.014,
+    "level": "stable"
+  },
+  {
+    "feature": "card6",
+    "psi": 0.013,
+    "level": "stable"
+  },
+  {
+    "feature": "card3",
+    "psi": 0.0128,
+    "level": "stable"
+  },
+  {
+    "feature": "D8",
+    "psi": 0.0126,
+    "level": "stable"
+  },
+  {
+    "feature": "M6",
+    "psi": 0.0123,
+    "level": "stable"
+  },
+  {
+    "feature": "dist1",
+    "psi": 0.0121,
+    "level": "stable"
+  },
+  {
+    "feature": "C2",
+    "psi": 0.0114,
+    "level": "stable"
+  },
+  {
+    "feature": "card5",
+    "psi": 0.0114,
+    "level": "stable"
+  },
+  {
+    "feature": "D14",
+    "psi": 0.0112,
+    "level": "stable"
+  },
+  {
+    "feature": "D13",
+    "psi": 0.0102,
+    "level": "stable"
+  },
+  {
+    "feature": "DeviceType",
+    "psi": 0.0098,
+    "level": "stable"
+  },
+  {
+    "feature": "D7",
+    "psi": 0.0095,
+    "level": "stable"
+  },
+  {
+    "feature": "C1",
+    "psi": 0.0094,
+    "level": "stable"
+  },
+  {
+    "feature": "C11",
+    "psi": 0.0093,
+    "level": "stable"
+  },
+  {
+    "feature": "C10",
+    "psi": 0.0092,
+    "level": "stable"
+  },
+  {
+    "feature": "C8",
+    "psi": 0.0091,
+    "level": "stable"
+  },
+  {
+    "feature": "card2",
+    "psi": 0.0088,
+    "level": "stable"
+  },
+  {
+    "feature": "D9",
+    "psi": 0.0087,
+    "level": "stable"
+  },
+  {
+    "feature": "dist2",
+    "psi": 0.0081,
+    "level": "stable"
+  },
+  {
+    "feature": "C6",
+    "psi": 0.0079,
+    "level": "stable"
+  },
+  {
+    "feature": "P_emaildomain",
+    "psi": 0.0078,
+    "level": "stable"
+  },
+  {
+    "feature": "C4",
+    "psi": 0.005,
+    "level": "stable"
+  },
+  {
+    "feature": "addr2",
+    "psi": 0.0044,
+    "level": "stable"
+  },
+  {
+    "feature": "C14",
+    "psi": 0.0044,
+    "level": "stable"
+  },
+  {
+    "feature": "M5",
+    "psi": 0.0037,
+    "level": "stable"
+  },
+  {
+    "feature": "card1",
+    "psi": 0.0037,
+    "level": "stable"
+  },
+  {
+    "feature": "addr1",
+    "psi": 0.0034,
+    "level": "stable"
+  },
+  {
+    "feature": "D12",
+    "psi": 0.0033,
+    "level": "stable"
+  },
+  {
+    "feature": "M4",
+    "psi": 0.0031,
+    "level": "stable"
+  },
+  {
+    "feature": "TransactionAmt",
+    "psi": 0.003,
+    "level": "stable"
+  },
+  {
+    "feature": "C7",
+    "psi": 0.0009,
+    "level": "stable"
+  },
+  {
+    "feature": "C5",
+    "psi": 0.0008,
+    "level": "stable"
+  },
+  {
+    "feature": "card_amt_sum_7d",
+    "psi": 0.0006,
+    "level": "stable"
+  },
+  {
+    "feature": "card_cnt_1h",
+    "psi": 0.0005,
+    "level": "stable"
+  },
+  {
+    "feature": "card_cnt_7d",
+    "psi": 0.0005,
+    "level": "stable"
+  },
+  {
+    "feature": "card_amt_sum_24h",
+    "psi": 0.0003,
+    "level": "stable"
+  },
+  {
+    "feature": "card_cnt_24h",
+    "psi": 0.0002,
+    "level": "stable"
+  },
+  {
+    "feature": "C3",
+    "psi": 0.0,
+    "level": "stable"
+  },
+  {
+    "feature": "card_fraud_cnt",
+    "psi": 0.0,
+    "level": "stable"
+  }
+]
