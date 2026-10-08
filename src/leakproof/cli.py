@@ -32,5 +32,23 @@ def build() -> None:
         raise typer.Exit(1)
 
 
+run_app = typer.Typer(no_args_is_help=True, help="Run experiments.")
+app.add_typer(run_app, name="run")
+
+
+@run_app.command("naive")
+def run_naive(mlflow: bool = typer.Option(True, help="Also log the runs to the local MLflow store.")) -> None:
+    """Train the leakage ladder on the development data and record the offline scores."""
+    import pandas as pd
+
+    from leakproof.model import naive_run
+
+    results = naive_run.run_ladder()
+    typer.echo(pd.DataFrame(results).to_string(index=False))
+    typer.echo(f"\nsaved to {naive_run.save(results)}")
+    if mlflow:
+        naive_run.log_to_mlflow(results)
+
+
 if __name__ == "__main__":
     app()

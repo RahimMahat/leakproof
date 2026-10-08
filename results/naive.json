@@ -1,0 +1,34 @@
+[
+  {
+    "variant": "time_split_base",
+    "split": "time",
+    "roc_auc": 0.9103,
+    "pr_auc": 0.5349,
+    "trees": 366,
+    "test_rows": 88581
+  },
+  {
+    "variant": "random_base",
+    "split": "random",
+    "roc_auc": 0.9703,
+    "pr_auc": 0.841,
+    "trees": 1998,
+    "test_rows": 75294
+  },
+  {
+    "variant": "random_global_aggs",
+    "split": "random",
+    "roc_auc": 0.9738,
+    "pr_auc": 0.8568,
+    "trees": 1434,
+    "test_rows": 75294
+  },
+  {
+    "variant": "random_target_enc",
+    "split": "random",
+    "roc_auc": 0.9993,
+    "pr_auc": 0.9864,
+    "trees": 355,
+    "test_rows": 75294
+  }
+]
